@@ -20,6 +20,18 @@ function App() {
     console.log(searchTerm)
   },[searchTerm])
 
+  function updateItemFave(updatedListing) {
+    const updatedFavedListings = listToShow.map((listing) => {
+      if(listing.id === updatedListing.id) {
+        return updatedListing;
+      } else {
+        return listing
+      }
+    });
+    //then we set all the items in state with the new array
+    setListToShow(updatedFavedListings)
+  }
+
   const searchedListings = listToShow.filter((listing) => {
     return Object.values(listing).join('').toLowerCase().includes(searchTerm.toLowerCase())
   })
@@ -32,7 +44,7 @@ function App() {
   return (
     <div className="app">
       <Header onSearchChange={onSearchChange} searchTerm={searchTerm}/>
-      <ListingsContainer handleDeleteItem={handleDeleteItem} listings={searchedListings}/>
+      <ListingsContainer onUpdatedFave={updateItemFave} handleDeleteItem={handleDeleteItem} listings={searchedListings}/>
     </div>
   );
 }

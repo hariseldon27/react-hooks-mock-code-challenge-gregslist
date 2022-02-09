@@ -1,21 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-function ListingCard( { listing, handleDeleteItem } ) {
+function ListingCard( { listing, handleDeleteItem, onUpdatedFave } ) {
   const { id, description, image, location } = listing
   const [isFave, setIsFave] = useState(false)
   
-  function handleFavoriteClick(e) {
-    setIsFave(() => !isFave)
-  }
-
+  
   function handleDeleteClick() {
     fetch(`http://localhost:6001/listings/${listing.id}`, {
       method: "DELETE",
     })
-      .then((r) => r.json())
-      .then(() => handleDeleteItem(listing.id));
-      //change the last line to fire our callback with the item id
+    .then((r) => r.json())
+    .then(() => handleDeleteItem(listing.id));
+    //change the last line to fire our callback with the item id
   }
+  
+  
+  function handleFavoriteClick(e) {
+    e.stopPropagation();
+    setIsFave(() => !isFave)
+  }
+
+  useEffect(() => {
+    fetch(`http://localhost:6001/listings/${listing.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        isFave: !isFave,
+      }),
+    })
+    .then((r) => r.json())
+    .then((updatedFaveItem) => onUpdatedFave(updatedFaveItem))
+  }, [isFave])
 
   return (
     <li className="card">
