@@ -4,6 +4,8 @@ import ListingsContainer from "./ListingsContainer";
 
 function App() {
   const [listToShow, setListToShow] = useState([])
+  const [searchTerm, setSearchTerm] = useState("")
+
 
   useEffect(() => {
     fetch("http://localhost:6001/listings")
@@ -11,10 +13,21 @@ function App() {
     .then((data) => setListToShow(data))
   }, [])
 
+  function onSearchChange(searchInput) {
+    setSearchTerm(() => searchInput)
+  }
+  useEffect(() => {
+    console.log(searchTerm)
+  },[searchTerm])
+
+  const searchedPlants = listToShow.filter((listing) => {
+    return Object.values(listing).join('').toLowerCase().includes(searchTerm.toLowerCase())
+  })
+
   return (
     <div className="app">
-      <Header />
-      <ListingsContainer listings={listToShow}/>
+      <Header onSearchChange={onSearchChange} searchTerm={searchTerm}/>
+      <ListingsContainer listings={searchedPlants}/>
     </div>
   );
 }
