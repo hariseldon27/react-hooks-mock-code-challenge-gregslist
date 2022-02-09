@@ -20,14 +20,14 @@ function App() {
     console.log(searchTerm)
   },[searchTerm])
 
-  const searchedPlants = listToShow.filter((listing) => {
+  const searchedListings = listToShow.filter((listing) => {
     return Object.values(listing).join('').toLowerCase().includes(searchTerm.toLowerCase())
   })
 
   return (
     <div className="app">
       <Header onSearchChange={onSearchChange} searchTerm={searchTerm}/>
-      <ListingsContainer listings={searchedPlants}/>
+      <ListingsContainer listings={searchedListings}/>
     </div>
   );
 }
