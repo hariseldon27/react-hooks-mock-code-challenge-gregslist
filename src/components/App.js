@@ -24,10 +24,15 @@ function App() {
     return Object.values(listing).join('').toLowerCase().includes(searchTerm.toLowerCase())
   })
 
+  function handleDeleteItem(idOfDataItemDelete) {
+    const updatedItems = listToShow.filter(item => item.id !== idOfDataItemDelete);
+    setListToShow(updatedItems)
+}
+
   return (
     <div className="app">
       <Header onSearchChange={onSearchChange} searchTerm={searchTerm}/>
-      <ListingsContainer listings={searchedListings}/>
+      <ListingsContainer handleDeleteItem={handleDeleteItem} listings={searchedListings}/>
     </div>
   );
 }
