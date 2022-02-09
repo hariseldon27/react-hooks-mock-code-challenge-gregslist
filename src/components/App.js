@@ -10,6 +10,7 @@ function App() {
     .then((r) => r.json())
     .then((data) => setListToShow(data))
   }, [])
+
   return (
     <div className="app">
       <Header />
